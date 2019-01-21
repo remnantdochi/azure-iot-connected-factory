@@ -7104,6 +7104,10 @@ a {
   padding-left: 0px;
   padding-right: 5px;
 }
+.dashboard_children_list_header_warning {
+    padding-left: 0px;
+    padding-right: 5px;
+}
 .dashboard_children_list_container {
   overflow-y: scroll;
   height: 450px;
@@ -7156,6 +7160,11 @@ a {
   padding-left: 1px;
   padding-right: 0px;
   padding-top: 7px;
+}
+.dashboard_children_listitem_warning {
+    padding-left: 1px;
+    padding-right: 0px;
+    padding-top: 7px;
 }
 /* 
  *  dashboard map

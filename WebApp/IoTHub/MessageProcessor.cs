@@ -75,6 +75,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp
             }
         }
 
+        //addition
         private bool ProcessPublisherMessage(string opcUri, string nodeId, string sourceTimestamp, string value)
         {
             // Get the OPC UA node object.

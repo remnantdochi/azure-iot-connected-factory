@@ -50,6 +50,11 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Models
         /// </summary>
         public string ChildrenListHeaderDetails { get; set; }
 
+        // <summary>
+        /// List header text of the warning column.
+        /// </summary>
+        public string ChildrenListHeaderWarning { get; set; }
+
         /// <summary>
         /// List with alerts for the view.
         /// </summary>

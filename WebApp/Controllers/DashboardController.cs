@@ -200,6 +200,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Controllers
                 dashboardModel.ChildrenListHeaderDetails = Strings.ChildrenOpcUaNodeListListHeaderDetails;
                 dashboardModel.ChildrenListHeaderLocation = Strings.ChildrenOpcUaNodeListListHeaderLocation;
                 dashboardModel.ChildrenListHeaderStatus = Strings.ChildrenOpcUaNodeListListHeaderStatus;
+                dashboardModel.ChildrenListHeaderWarning = Strings.ChildrenOpcUaNodeListListHeaderWarning;
             }
             Trace.TraceInformation($"Show dashboard view for ({dashboardModel.TopNode.Key})");
             return View(dashboardModel);
