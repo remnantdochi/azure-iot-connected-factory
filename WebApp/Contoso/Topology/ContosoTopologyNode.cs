@@ -51,6 +51,9 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
         /// </summary>
         public string ImagePath { get; set; }
 
+        //경고 추가.
+        public string Warning { get; set; }
+
         /// <summary>
         /// Image pushpin coordinates.
         /// </summary>

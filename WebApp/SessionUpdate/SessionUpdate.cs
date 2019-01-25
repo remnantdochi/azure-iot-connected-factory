@@ -200,6 +200,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp
                         sessionChildrenData.SessionId = session.Key;
                         sessionChildrenData.TopNode = topNodeKey;
                         sessionChildrenData.Children = Startup.Topology.GetChildrenInfo(topNodeKey);
+                       
 
                         // Update the data sent to the clients.
                         sessionChildrenDataUpdate[sessionUpdateIndex] = sessionChildrenData;

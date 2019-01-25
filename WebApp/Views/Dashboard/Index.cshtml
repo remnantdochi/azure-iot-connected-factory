@@ -19,7 +19,7 @@
 
 <div class="dashboard_container container-fluid">
     <div class="row dashboard_top_container">
-        <div class="dashboard_children_container col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <div class="dashboard_children_container col-xs-12 col-sm-12 col-md-4 col-lg-4">
             @{
                 Html.RenderPartial("_ChildrenList", Model);
             }
@@ -1333,16 +1333,16 @@
                                         childrenList += '<div id="childrenListListItemStatusText" class="dashboard_children_listitem_status_text col-xs-3 col-lg-3 overflow">' + statusMessage + '</div>';
                                         childrenList += '<div class="dashboard_children_listitem_location col-xs-3 col-lg-3 overflow">' + session.Children[j].Name + '</div>';
                                         childrenList += '<div class="dashboard_children_listitem_details col-xs-3 col-lg-3 overflow">' + session.Children[j].Last + ' ' + session.Children[j].Unit + '</div>';
-                                        childrenList += '<div class="dashboard_children_listitem_warning col-xs-3 col-lg-3 overflow">' + '0' + '</div>';
+                                        childrenList += '<div class="dashboard_children_listitem_warning col-xs-3 col-lg-3 overflow">' + session.Children[j].WarningValue + '</div>';
                                         childrenList += '</div>';
                                     }
                                 }
                                 else {
                                     childrenList += '<div id="dashboard_children_listitem' + j + '" class="dashboard_children_listitem_container ' + dashboardStatusClass + ' row" onclick="gotoChildrenNode(\''+url+'\')">';
                                     childrenList += '<div id="childrenListListItemStatusText" class="dashboard_children_listitem_status_text col-xs-3 col-lg-3 overflow">' + statusMessage + '</div>';
-                                    childrenList += '<div class="dashboard_children_listitem_location col-xs-4 col-lg-4 overflow">' + session.Children[j].Name + '</div>';
-                                    childrenList += '<div class="dashboard_children_listitem_details col-xs-4 col-lg-4 overflow">' + session.Children[j].Description + '</div>';
-                                    childrenList += '<div class="dashboard_children_listitem_warning col-xs-4 col-lg-4 overflow">' + '0' + '</div>';
+                                    childrenList += '<div class="dashboard_children_listitem_location col-xs-3 col-lg-3 overflow">' + session.Children[j].Name + '</div>';
+                                    childrenList += '<div class="dashboard_children_listitem_details col-xs-3 col-lg-3 overflow">' + session.Children[j].Description + '</div>';
+                                    childrenList += '<div class="dashboard_children_listitem_warning col-xs-3 col-lg-3 overflow">' + '0' + '</div>';
                                     childrenList += '<img class="dashboard-chevron-right" align="right" src="/Content/img/chevron_right.svg">';
                                     childrenList += '</div>';
                                 }
@@ -1378,7 +1378,8 @@
         //
         telemetry.client.updateSessionOeeKpiData = function (sessionUpdateJson) {
             sessionUpdate = JSON.parse(sessionUpdateJson);
-            if (sessionUpdate != undefined) {
+            if (
+                Update != undefined) {
                 for (i = 0; i < sessionUpdate.length; i++) {
                     var session = sessionUpdate[i];
                     if (session != undefined && session.SessionId != undefined && session.SessionId == "@Model.SessionId" && session.TopNode == "@Model.TopNode.Key") {

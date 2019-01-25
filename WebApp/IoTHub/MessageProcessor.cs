@@ -13,6 +13,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp
 {
     using static Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Controllers.DashboardController;
     using static Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.SessionUpdate;
+    
 
     public class MonitoredItemDataValue
     {
@@ -76,7 +77,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp
         }
 
         //addition
-        private bool ProcessPublisherMessage(string opcUri, string nodeId, string sourceTimestamp, string value)
+        private bool ProcessPublisherMessage(string opcUri, string nodeId, string sourceTimestamp, string value, string warning)
         {
             // Get the OPC UA node object.
             ContosoOpcUaNode opcUaNode = Startup.Topology.GetOpcUaNode(opcUri.ToLower(), nodeId);
@@ -88,6 +89,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp
             // Update last value.
             opcUaNode.LastValue = value;
             opcUaNode.LastValueTimestamp = sourceTimestamp;
+            opcUaNode.WarningValue = warning;
             return true;
         }
 
@@ -131,8 +133,8 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp
                                 {
                                     _publisherMessages++;
                                     try
-                                    {
-                                        ProcessPublisherMessage(publisherMessage.OpcUri, publisherMessage.NodeId, publisherMessage.Value.SourceTimestamp, publisherMessage.Value.Value);
+                                    {   
+                                        ProcessPublisherMessage(publisherMessage.OpcUri, publisherMessage.NodeId, publisherMessage.Value.SourceTimestamp, publisherMessage.Value.Value, eventhub_warning);
                                         _lastSourceTimestamp = publisherMessage.Value.SourceTimestamp;
                                         _lastOpcUri = publisherMessage.OpcUri;
                                         _lastNodeId = publisherMessage.NodeId;
@@ -150,7 +152,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp
                             _publisherMessagesInvalidFormat++;
                             if (publisherMessage != null)
                             {
-                                ProcessPublisherMessage(publisherMessage.OpcUri, publisherMessage.NodeId, publisherMessage.Value.SourceTimestamp, publisherMessage.Value.Value);
+                                ProcessPublisherMessage(publisherMessage.OpcUri, publisherMessage.NodeId, publisherMessage.Value.SourceTimestamp, publisherMessage.Value.Value, eventhub_warning);
                                 _lastSourceTimestamp = publisherMessage.Value.SourceTimestamp;
                                 _lastOpcUri = publisherMessage.OpcUri;
                                 _lastNodeId = publisherMessage.NodeId;
@@ -163,7 +165,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp
                             if (SessionsViewingStationsCount() != 0)
                             {
                                 try
-                                {
+                                {   
                                     Trace.TraceInformation($"processorHostMessages {_processorHostMessages}, publisherMessages {_publisherMessages}/{_publisherMessagesInvalidFormat}, sourceTimestamp: '{_lastSourceTimestamp}'");
                                     Trace.TraceInformation($"opcUri '{_lastOpcUri}', nodeid '{_lastNodeId}'");
                                     TriggerSessionChildrenDataUpdate();
@@ -197,6 +199,100 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp
         private string _lastSourceTimestamp;
         private string _lastOpcUri;
         private string _lastNodeId;
+        public static string eventhub_warning;
+    }
+
+    public class EventHubMessage
+    {
+        //[JsonProperty("ApplicationUri")]
+        public string OpcUri { get; set; }
+
+        public string NodeId { get; set; }
+
+        public string Time { get; set; }
+
+        public string WARNING { get; set; }
+    }
+
+
+
+    public class SimpleEventProcessor : IEventProcessor
+    {
+        
+
+        public Task CloseAsync(PartitionContext context, CloseReason reason)
+        {
+            //Console.WriteLine($"Processor Shutting Down. Partition '{context.PartitionId}', Reason: '{reason}'.");
+            /*if (_sessionUpdateStopwatch != null)
+            {
+                _sessionUpdateStopwatch = null;
+            }*/
+            return Task.CompletedTask;
+        }
+
+        public Task OpenAsync(PartitionContext context)
+        {
+            ///Console.WriteLine($"SimpleEventProcessor initialized. Partition: '{context.PartitionId}'");
+            /*
+            if (_sessionUpdateStopwatch == null)
+            {
+                _sessionUpdateStopwatch = new Stopwatch();
+            }*/
+            return Task.CompletedTask;
+        }
+
+        public Task ProcessErrorAsync(PartitionContext context, Exception error)
+        {
+            Console.WriteLine($"Error on Partition: {context.PartitionId}, Error: {error.Message}");
+            return Task.CompletedTask;
+        }
+
+        //추가
+        /*private bool ProcessEventHubMessage(string OpcUri, string NodeId, string sourceTimestamp, string value)
+        {
+            // Get the OPC UA node object.
+            ContosoOpcUaNode opcUaNode = Startup.Topology.GetOpcUaNode(OpcUri.ToLower(), NodeId);
+            if (opcUaNode == null)
+            {
+                return false;
+            }
+
+            // Update warning value 값을 contosoopcUAnode에 넘겨줌.
+            opcUaNode.WarningValue = value;
+            
+            eventhub_warning = value;
+
+
+
+            return true;
+        }*/
+
+        public Task ProcessEventsAsync(PartitionContext context, IEnumerable<EventData> messages)
+        {
+
+
+            foreach (var eventData in messages)
+            {
+                var data = Encoding.UTF8.GetString(eventData.Body.Array, eventData.Body.Offset, eventData.Body.Count);
+                //Console.WriteLine($"Message received. Partition: '{context.PartitionId}', Data: '{data}'");
+                // checkpoint, so that the processor does not need to start from the beginning if it restarts
+
+                if (data != null)
+                {
+                    if (data.StartsWith("{\""))
+                    {
+                        EventHubMessage publisherMessages = JsonConvert.DeserializeObject<EventHubMessage>(data);
+
+                        //ProcessEventHubMessage(publisherMessages.OpcUri, publisherMessages.NodeId, publisherMessages.Time, "101");
+                        MessageProcessor.eventhub_warning = publisherMessages.WARNING;
+                    }
+
+                }
+
+            }
+            return context.CheckpointAsync();
+        }
+
     }
 }
 

@@ -55,5 +55,6 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Models
         public string TopNode { get; set; }
 
         public List<ContosoChildInfo> Children { get; set; }
+
     }
 }

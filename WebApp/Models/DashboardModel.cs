@@ -20,6 +20,9 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Models
         /// </summary>
         public ContosoTopologyNode TopNode { get; set; }
 
+        ///eventhub에서 가져올 데이터
+        //public ContosoOpcUaNode EventNode { get; set; }
+
         public Type ChildrenType { get; set; }
 
         public List<ContosoChildInfo> Children;
@@ -54,6 +57,9 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Models
         /// List header text of the warning column.
         /// </summary>
         public string ChildrenListHeaderWarning { get; set; }
+
+
+        
 
         /// <summary>
         /// List with alerts for the view.

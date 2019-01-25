@@ -1,4 +1,5 @@
 #예지랑 수정한거
+#warning에 bejing pressure 값이 10이상 차이날때는 1이 나오도록 함. 모든 항목에 똑같은 값이 뜸.
 # Microsoft Azure IoT solution accelerators 
 You can deploy Azure IoT solution accelerators that implement common Internet of Things (IoT) scenarios to Microsoft Azure using your Azure subscription. You can use solution accelerators: 
 - as a starting point for your own IoT solution. 

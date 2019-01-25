@@ -83,6 +83,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Controllers
             _mapQueryKey = ConfigurationProvider.GetConfigurationSettingValue("MapApiQueryKey");
             _mapQueryKey = (_mapQueryKey.IsEmpty() || _mapQueryKey.Equals("0")) ? string.Empty : _mapQueryKey;
         }
+        
 
         [HttpGet]
         [RequirePermission(Permission.ViewTelemetry)]
@@ -108,6 +109,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Controllers
                     // Set the new dashboard TopNode.
                     dashboardModel.TopNode = (ContosoTopologyNode)Startup.Topology[topNode];
 
+                    
                     // Update type of children for the view and track sessions viewing at stations
                     Type topNodeType = dashboardModel.TopNode.GetType();
                     if (topNodeType == typeof(Factory))
@@ -201,6 +203,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Controllers
                 dashboardModel.ChildrenListHeaderLocation = Strings.ChildrenOpcUaNodeListListHeaderLocation;
                 dashboardModel.ChildrenListHeaderStatus = Strings.ChildrenOpcUaNodeListListHeaderStatus;
                 dashboardModel.ChildrenListHeaderWarning = Strings.ChildrenOpcUaNodeListListHeaderWarning;
+
             }
             Trace.TraceInformation($"Show dashboard view for ({dashboardModel.TopNode.Key})");
             return View(dashboardModel);
