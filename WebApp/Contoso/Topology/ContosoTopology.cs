@@ -112,6 +112,9 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
         // Unit of node value
         public string Unit { get; set; }
 
+        // warningvalue 추가
+        public string WarningValue { get; set; }
+
         // Pushpin coordinates
         public ContosoPushPinCoordinates ImagePushpin { get; set; }
 
@@ -123,7 +126,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
         /// <summary>
         /// Ctor for child node information of topology nodes (non OPC UA nodes) using values.
         /// </summary>
-        public ContosoChildInfo(string key, string status, string name, string description, string city, double latitude, double longitude, bool visible, ContosoPushPinCoordinates imagePushpin)
+        public ContosoChildInfo(string key, string status, string name, string description, string city, double latitude, double longitude, bool visible, string warningvalue, ContosoPushPinCoordinates imagePushpin)
         {
             Key = key;
             SubKey = "null";
@@ -134,6 +137,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
             Latitude = latitude;
             Longitude = longitude;
             Visible = visible;
+            WarningValue = warningvalue;
             ImagePushpin = imagePushpin;
         }
 
@@ -141,7 +145,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
         /// Ctor for child node information of OPC UA nodes.
         /// </summary>
 
-        public ContosoChildInfo(string key, string subKey, string status, string name, string description, string city, double latitude, double longitude, bool visible, string last, string unit, ContosoPushPinCoordinates imagePushpin)
+        public ContosoChildInfo(string key, string subKey, string status, string name, string description, string city, double latitude, double longitude, bool visible, string last, string unit, string warningvalue, ContosoPushPinCoordinates imagePushpin)
         {
             Key = key;
             SubKey = subKey;
@@ -154,6 +158,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
             Visible = visible;
             Last = last;
             Unit = unit != null ? unit : "";
+            WarningValue = warningvalue;
             ImagePushpin = imagePushpin;
         }
     }
@@ -465,6 +470,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
                                                                       opcUaNode.Visible, 
                                                                       opcUaNode.LastValueToUxString(), 
                                                                       opcUaNode.Units,
+                                                                      opcUaNode.WarningValue,
                                                                       opcUaNode.ImagePushpin);
                     childrenInfo.Add(childInfo);
                 }
@@ -478,21 +484,21 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
                     {
                         Factory factory = (Factory)TopologyTable[key];
                         ContosoChildInfo dashboardChild = new ContosoChildInfo(factory.Key, factory.Status.ToString(), factory.Name, factory.Description,
-                                                                    factory.Location.City, factory.Location.Latitude, factory.Location.Longitude, true, factory.ImagePushpin);
+                                                                    factory.Location.City, factory.Location.Latitude, factory.Location.Longitude, true, "0",factory.ImagePushpin);
                         childrenInfo.Add(dashboardChild);
                     }
                     if (childrenType == typeof(ProductionLine))
                     {
                         ProductionLine productionLine = (ProductionLine)TopologyTable[key];
                         ContosoChildInfo dashboardChild = new ContosoChildInfo(productionLine.Key, productionLine.Status.ToString(), productionLine.Name, productionLine.Description,
-                                                                    productionLine.Location.City, productionLine.Location.Latitude, productionLine.Location.Longitude, true, productionLine.ImagePushpin);
+                                                                    productionLine.Location.City, productionLine.Location.Latitude, productionLine.Location.Longitude, true, "0" ,productionLine.ImagePushpin);
                         childrenInfo.Add(dashboardChild);
                     }
                     if (childrenType == typeof(Station))
                     {
                         Station station = (Station)TopologyTable[key];
                         ContosoChildInfo dashboardChild = new ContosoChildInfo(station.Key, station.Status.ToString(), station.Name, station.Description,
-                                                                    station.Location.City, station.Location.Latitude, station.Location.Longitude, true, station.ImagePushpin);
+                                                                    station.Location.City, station.Location.Latitude, station.Location.Longitude, true, "0", station.ImagePushpin);
                         childrenInfo.Add(dashboardChild);
                     }
                 }

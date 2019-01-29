@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NuGet.Modules.JObjectExtensions" Version="1.0.1" />
     <PackageReference Include="OPCFoundation.NetStandard.Opc.Ua" Version="0.4.5" />
   </ItemGroup>
 

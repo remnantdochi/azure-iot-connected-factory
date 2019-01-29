@@ -260,6 +260,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.RDX
                                 null,
                                 null,
                                 null,
+                                null,
                                 null
                                 );
                         }

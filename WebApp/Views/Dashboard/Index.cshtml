@@ -189,7 +189,7 @@
                 <div class="dashboard_contextpanel_header_text">@Strings.FilterLabel</div>
             </div>
             <a href="#" class="closebtn" onclick="closeFilterPanel()"><img class="dashboard-cancel-icon" src="~/Content/img/cancel.svg" hidden></a>
-            @for (int i = 0; i < 3; i++)
+            @for (int i = 0; i < 4; i++)
             {
                 <div class="dashboard_contextpanel_list_container">
                     <p id="filterLabel@(i)" class="dashboard_contextpanel_select_list_label" for="topologySelector@(i)"></p>
@@ -1331,8 +1331,9 @@
                                     if (session.Children[j].Visible == true) {
                                         childrenList += '<div id="dashboard_children_listitem' + j +'" class="dashboard_children_listitem_container ' + dashboardStatusClass + ' row" onclick="openContextPanelFromNode(\'' + session.Children[j].Name + '\',\'' + session.Children[j].SubKey + '\');">';
                                         childrenList += '<div id="childrenListListItemStatusText" class="dashboard_children_listitem_status_text col-xs-3 col-lg-3 overflow">' + statusMessage + '</div>';
-                                        childrenList += '<div class="dashboard_children_listitem_location col-xs-4 col-lg-4 overflow">' + session.Children[j].Name + '</div>';
-                                        childrenList += '<div class="dashboard_children_listitem_details col-xs-5 col-lg-5 overflow">' + session.Children[j].Last + ' ' + session.Children[j].Unit + '</div>';
+                                        childrenList += '<div class="dashboard_children_listitem_location col-xs-3 col-lg-3 overflow">' + session.Children[j].Name + '</div>';
+                                        childrenList += '<div class="dashboard_children_listitem_details col-xs-3 col-lg-3 overflow">' + session.Children[j].Last + ' ' + session.Children[j].Unit + '</div>';
+                                        childrenList += '<div class="dashboard_children_listitem_warning col-xs-3 col-lg-3 overflow">' + session.Children[j].WarningValue + '</div>';
                                         childrenList += '</div>';
                                     }
                                 }
@@ -1376,7 +1377,8 @@
         //
         telemetry.client.updateSessionOeeKpiData = function (sessionUpdateJson) {
             sessionUpdate = JSON.parse(sessionUpdateJson);
-            if (sessionUpdate != undefined) {
+            if (
+                Update != undefined) {
                 for (i = 0; i < sessionUpdate.length; i++) {
                     var session = sessionUpdate[i];
                     if (session != undefined && session.SessionId != undefined && session.SessionId == "@Model.SessionId" && session.TopNode == "@Model.TopNode.Key") {
@@ -1492,7 +1494,7 @@
         idAll: $("#allIcon"),
         idFilter: $("#filterIcon"),
         filter: [],
-        filterLabels: ['@Model.ChildrenListHeaderStatus', '@Model.ChildrenListHeaderLocation', '@Model.ChildrenListHeaderDetails'],
+        filterLabels: ['@Model.ChildrenListHeaderStatus', '@Model.ChildrenListHeaderLocation', '@Model.ChildrenListHeaderDetails','@Model.ChildrenListHeaderWarning'],
 
         listItemDetails:[
         {
@@ -1511,6 +1513,12 @@
             elementClass: $(".dashboard_children_listitem_details"),
             selector: $("#topologySelector2"),
             cookieName: "cookieTopologySelector2",
+            filterSelection: null
+        },
+        {
+            elementClass: $(".dashboard_children_listitem_warning"),
+            selector: $("#topologySelector3"),
+            cookieName: "cookieTopologySelector3",
             filterSelection: null
         }]
     };
@@ -1583,6 +1591,8 @@
         topologyListInformation.listItemDetails[0].elementClass = $(".dashboard_children_listitem_status_text");
         topologyListInformation.listItemDetails[1].elementClass = $(".dashboard_children_listitem_location");
         topologyListInformation.listItemDetails[2].elementClass = $(".dashboard_children_listitem_details");
+        topologyListInformation.listItemDetails[3].elementClass = $(".dashboard_children_listitem_warning")
+
     }
 
     function updateAlertListInformation() {

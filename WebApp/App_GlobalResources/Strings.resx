@@ -297,6 +297,10 @@
     <value>STATUS</value>
     <comment>Label</comment>
   </data>
+  <data name="ChildrenOpcUaNodeListListHeaderWarning" xml:space="preserve">
+    <value>WARNING</value>
+    <comment>Label</comment>
+  </data>
   <data name="ChildrenProductionLineListContainerHeaderPostfix" xml:space="preserve">
     <value>details</value>
     <comment>Label</comment>

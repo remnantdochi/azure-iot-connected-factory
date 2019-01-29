@@ -67,6 +67,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
         [JsonProperty]
         public string Units;
 
+
         [DefaultValue(true)]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool Visible;
@@ -85,12 +86,17 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
 
         [JsonProperty]
         public List<ContosoAlertActionDescription> MaximumAlertActions;
+
+        //경고추가
+        [JsonProperty]
+        public string Warning;
     }
 
     /// <summary>
     /// Class for Contoso OPC UA node information.
     /// </summary>
     public class ContosoOpcUaNode : OpcUaNode
+ 
     {
         /// <summary>
         /// This list defines for which performance parameters this node is relevant for.
@@ -103,6 +109,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
         /// The last value obtained by a query.
         /// </summary>
         public ContosoDataItem Last;
+
 
         /// <summary>
         /// The last value ingested to IoTHub.
@@ -164,6 +171,9 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
         /// <summary>
         public ContosoPushPinCoordinates ImagePushpin { get; set; }
 
+        ///경고추가
+        public string WarningValue;
+
         /// <summary>
         /// Ctor for a Contoso OPC UA node, specifying alert related information.
         /// </summary>
@@ -179,7 +189,8 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
             double? maximum,
             List<ContosoAlertActionDefinition> minimumAlertActionDefinitions,
             List<ContosoAlertActionDefinition> maximumAlertActionDefinitions,
-            ContosoPushPinCoordinates imagePushpin
+            ContosoPushPinCoordinates imagePushpin,
+            string warning
             )
             : base(opcUaNodeId, opcUaSymbolicName)
         {
@@ -194,6 +205,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
             MaximumAlertActions = maximumAlertActionDefinitions;
             Last = new ContosoDataItem();
             ImagePushpin = imagePushpin;
+            WarningValue = warning;
         }
 
         /// <summary>
@@ -204,7 +216,8 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
             string opcUaNodeId,
             string opcUaSymbolicName,
             List<ContosoPerformanceRelevance> opcUaNodeRelevance,
-            ContosoOpcNodeDescription opcNodeDescription)
+            ContosoOpcNodeDescription opcNodeDescription,
+            string warning)
             : base(opcUaNodeId, opcUaSymbolicName)
         {
             Relevance = opcUaNodeRelevance;
@@ -221,6 +234,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
             MaximumAlertActions.AddRange(ContosoAlertActionDefinition.Init(opcNodeDescription.MaximumAlertActions));
             Last = new ContosoDataItem();
             ImagePushpin = opcNodeDescription.ImagePushpin;
+            WarningValue = opcNodeDescription.Warning;
         }
 
         /// <summary>
@@ -358,7 +372,8 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
             double? maximum,
             List<ContosoAlertActionDefinition> minimumAlertActionDefinitions,
             List<ContosoAlertActionDefinition> maximumAlertActionDefinitions,
-            ContosoPushPinCoordinates imagePushpin)
+            ContosoPushPinCoordinates imagePushpin,
+            string warning)
         {
             foreach (var node in NodeList)
             {
@@ -381,7 +396,8 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
                 maximum,
                 minimumAlertActionDefinitions,
                 maximumAlertActionDefinitions,
-                imagePushpin);
+                imagePushpin,
+                warning);
 
             NodeList.Add(opcUaNodeObject);
         }
@@ -405,7 +421,8 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp.Contoso
                 opcUaNodeDescription.NodeId,
                 opcUaNodeDescription.SymbolicName,
                 opcUaNodeRelevance,
-                opcUaNodeDescription);
+                opcUaNodeDescription,
+                opcUaNodeDescription.Warning);
 
             NodeList.Add(opcUaNodeObject);
         }
