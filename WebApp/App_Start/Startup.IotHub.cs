@@ -66,8 +66,10 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp
             options2.SetExceptionHandler(EventProcessorHostExceptionHandler);
             try
             {   //eventhub 합침.
+
                 await eventProcessorHost2.RegisterEventProcessorAsync<SimpleEventProcessor>(options2);
                 await eventProcessorHost.RegisterEventProcessorAsync<MessageProcessor>(options);
+                
 
                 Trace.TraceInformation($"EventProcessor successfully registered");
                 
@@ -85,9 +87,10 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp
                     Trace.TraceInformation($"Application is shutting down. Unregistering EventProcessorHost...");
                     await eventProcessorHost2.UnregisterEventProcessorAsync();
                     await eventProcessorHost.UnregisterEventProcessorAsync();
+                    
                     return;
                 }
-                await Task.Delay(1000);
+                await Task.Delay(2000);
             }
         }
 

@@ -211,7 +211,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp
 
         public string Time { get; set; }
 
-        public string WARNING { get; set; }
+        public string Value { get; set; }
     }
 
 
@@ -284,7 +284,7 @@ namespace Microsoft.Azure.IoTSuite.Connectedfactory.WebApp
                         EventHubMessage publisherMessages = JsonConvert.DeserializeObject<EventHubMessage>(data);
 
                         //ProcessEventHubMessage(publisherMessages.OpcUri, publisherMessages.NodeId, publisherMessages.Time, "101");
-                        MessageProcessor.eventhub_warning = publisherMessages.WARNING;
+                        MessageProcessor.eventhub_warning = publisherMessages.Value;
                     }
 
                 }
